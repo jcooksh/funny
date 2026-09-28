@@ -4,30 +4,40 @@
 <meta charset="utf-8">
 <title>Catch me!</title>
 <style>
-  body { margin:0; height:100vh; display:grid; place-items:center;
-         font:bold 1rem system-ui,sans-serif; background:#ffd400; }
-  button { position:fixed; bottom:6px; right:6px; }
+  html,body { margin:0; height:100%; }
+  #unleash { width:100%; height:100vh; border:0; cursor:pointer;
+             font:bold 1.1rem system-ui,sans-serif; background:#ffd400; color:#111; }
+  #close { position:fixed; bottom:6px; right:6px; }
 </style>
 </head>
 <body>
-  <div>Catch me! 🏃</div>
-  <button onclick="window.close()">Close</button>
+  <button id="unleash">Unleash 😈</button>
+  <button id="close" onclick="window.close()">Close</button>
 <script>
-  // Play audio.mp3 if the opener page has one next to it. Loud but not forced past 100%.
-  // Just another popup — a harmless dialog, no device access.
-  alert("You'll never catch me! 😈");
-
   const a = new Audio('audio.mp3');
   a.loop = true; a.volume = 1.0;
-  a.play().catch(() => {}); // browsers may block until the user interacts
+
+  const fast = () => (Math.random() < 0.5 ? -1 : 1) * (13 + Math.random()*7);
+  let x = window.screenX, y = window.screenY;
+  let dx = fast(), dy = fast();
+
+  // The whole window is an Unleash button — re-taunt, re-aim, (re)play sound.
+  // Affects THIS window only; it never opens new windows.
+  function unleash() {
+    dx = fast(); dy = fast();
+    a.currentTime = 0; a.play().catch(() => {});
+    alert("You'll never catch me! 😈");
+  }
+  document.getElementById('unleash').addEventListener('click', unleash);
+
+  // First taunt on open.
+  alert("You'll never catch me! 😈");
+  a.play().catch(() => {});
 
   // Ask "are you sure?" when this popup is closed (browser shows its own prompt).
   window.addEventListener('beforeunload', (e) => { e.preventDefault(); e.returnValue = ''; });
 
   // Bounce this window around the screen — random direction, all fast.
-  const fast = () => (Math.random() < 0.5 ? -1 : 1) * (13 + Math.random()*7);
-  let x = window.screenX, y = window.screenY;
-  let dx = fast(), dy = fast();
   setInterval(() => {
     const maxX = screen.availWidth  - window.outerWidth;
     const maxY = screen.availHeight - window.outerHeight;
