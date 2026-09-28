@@ -5,30 +5,40 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Funny</title>
 <style>
-  body { margin: 0; height: 100vh; display: grid; place-items: center; font-family: system-ui, sans-serif; background: #111; color: #fff; }
-  button { font-size: 1.5rem; padding: 1rem 2rem; border: 0; border-radius: 12px; background: #ff3d7f; color: #fff; cursor: pointer; }
-  p { color: #aaa; text-align: center; }
+  body { margin:0; height:100vh; display:grid; place-items:center; gap:1rem;
+         font-family:system-ui,sans-serif; background:#111; color:#fff; }
+  .row { display:flex; gap:1rem; }
+  button { font-size:1.4rem; padding:1rem 2rem; border:0; border-radius:12px; cursor:pointer; }
+  #go { background:#ff3d7f; color:#fff; }
+  #stop { background:#333; color:#fff; }
+  p { color:#aaa; text-align:center; margin:0; }
 </style>
 </head>
 <body>
-  <div>
-    <button id="go">Click me 😈</button>
-    <p id="msg"></p>
+  <div class="row">
+    <button id="go">Unleash 😈</button>
+    <button id="stop">Close all</button>
   </div>
+  <p id="msg">Drop an <b>audio.mp3</b> you own next to this file for sound.</p>
 <script>
+  const COUNT = 6;        // how many popups
   const popups = [];
+
   document.getElementById('go').addEventListener('click', () => {
-    for (let i = 0; i < 2; i++) {
-      const w = window.open('popup.html', 'bouncer' + i,
-        'popup,width=300,height=200,left=' + (100 + i * 350) + ',top=100');
+    for (let i = 0; i < COUNT; i++) {
+      const w = window.open('popup.html', 'bouncer' + i + '_' + Date.now(),
+        'popup,width=280,height=180,left=' + (60 + i * 120) + ',top=' + (60 + i * 60));
       if (w) popups.push(w);
     }
     if (!popups.length) {
-      document.getElementById('msg').textContent = 'Popups were blocked - allow popups for this site and try again.';
+      document.getElementById('msg').textContent =
+        'Popups were blocked — allow popups for this site and click again.';
     }
   });
-  // Close the popups when this page closes
-  window.addEventListener('beforeunload', () => popups.forEach(w => w.close()));
+
+  document.getElementById('stop').addEventListener('click', closeAll);
+  function closeAll() { while (popups.length) { const w = popups.pop(); try { w.close(); } catch(e){} } }
+  window.addEventListener('beforeunload', closeAll);
 </script>
 </body>
 </html>
