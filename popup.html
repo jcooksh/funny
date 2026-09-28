@@ -21,9 +21,10 @@
   // Ask "are you sure?" when this popup is closed (browser shows its own prompt).
   window.addEventListener('beforeunload', (e) => { e.preventDefault(); e.returnValue = ''; });
 
-  // Bounce this window around the screen, a bit quicker.
+  // Bounce this window around the screen — random direction, all fast.
+  const fast = () => (Math.random() < 0.5 ? -1 : 1) * (13 + Math.random()*7);
   let x = window.screenX, y = window.screenY;
-  let dx = 12 + Math.random()*8, dy = 12 + Math.random()*8;
+  let dx = fast(), dy = fast();
   setInterval(() => {
     const maxX = screen.availWidth  - window.outerWidth;
     const maxY = screen.availHeight - window.outerHeight;
