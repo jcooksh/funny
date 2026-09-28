@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Funny</title>
+<style>
+  body { margin: 0; height: 100vh; display: grid; place-items: center; font-family: system-ui, sans-serif; background: #111; color: #fff; }
+  button { font-size: 1.5rem; padding: 1rem 2rem; border: 0; border-radius: 12px; background: #ff3d7f; color: #fff; cursor: pointer; }
+  p { color: #aaa; text-align: center; }
+</style>
+</head>
+<body>
+  <div>
+    <button id="go">Click me 😈</button>
+    <p id="msg"></p>
+  </div>
+<script>
+  const popups = [];
+  document.getElementById('go').addEventListener('click', () => {
+    for (let i = 0; i < 2; i++) {
+      const w = window.open('popup.html', 'bouncer' + i,
+        'popup,width=300,height=200,left=' + (100 + i * 350) + ',top=100');
+      if (w) popups.push(w);
+    }
+    if (!popups.length) {
+      document.getElementById('msg').textContent = 'Popups were blocked - allow popups for this site and try again.';
+    }
+  });
+  // Close the popups when this page closes
+  window.addEventListener('beforeunload', () => popups.forEach(w => w.close()));
+</script>
+</body>
+</html>
