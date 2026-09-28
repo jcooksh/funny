@@ -10,14 +10,12 @@
   .row { display:flex; gap:1rem; }
   button { font-size:1.4rem; padding:1rem 2rem; border:0; border-radius:12px; cursor:pointer; }
   #go { background:#ff3d7f; color:#fff; }
-  #stop { background:#333; color:#fff; }
   p { color:#aaa; text-align:center; margin:0; }
 </style>
 </head>
 <body>
   <div class="row">
     <button id="go">Unleash 😈</button>
-    <button id="stop">Close all</button>
   </div>
   <p id="msg">Drop an <b>audio.mp3</b> you own next to this file for sound.</p>
 <script>
@@ -36,9 +34,10 @@
     }
   });
 
-  document.getElementById('stop').addEventListener('click', closeAll);
-  function closeAll() { while (popups.length) { const w = popups.pop(); try { w.close(); } catch(e){} } }
-  window.addEventListener('beforeunload', closeAll);
+  // Still clean up the popups if this page is closed.
+  window.addEventListener('beforeunload', () => {
+    while (popups.length) { const w = popups.pop(); try { w.close(); } catch(e){} }
+  });
 </script>
 </body>
 </html>
