@@ -18,6 +18,9 @@
   a.loop = true; a.volume = 1.0;
   a.play().catch(() => {}); // browsers may block until the user interacts
 
+  // Ask "are you sure?" when this popup is closed (browser shows its own prompt).
+  window.addEventListener('beforeunload', (e) => { e.preventDefault(); e.returnValue = ''; });
+
   // Bounce this window around the screen, a bit quicker.
   let x = window.screenX, y = window.screenY;
   let dx = 12 + Math.random()*8, dy = 12 + Math.random()*8;
