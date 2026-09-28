@@ -14,6 +14,9 @@
   <button onclick="window.close()">Close</button>
 <script>
   // Play audio.mp3 if the opener page has one next to it. Loud but not forced past 100%.
+  // Just another popup — a harmless dialog, no device access.
+  alert("You'll never catch me! 😈");
+
   const a = new Audio('audio.mp3');
   a.loop = true; a.volume = 1.0;
   a.play().catch(() => {}); // browsers may block until the user interacts
