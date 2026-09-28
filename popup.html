@@ -8,11 +8,17 @@
   #unleash { width:100%; height:100vh; border:0; cursor:pointer;
              font:bold 1.1rem system-ui,sans-serif; background:#ffd400; color:#111; }
   #close { position:fixed; bottom:6px; right:6px; }
+  #toast { position:fixed; top:8px; left:50%; transform:translateX(-50%);
+           background:#111; color:#fff; padding:.4rem .7rem; border-radius:8px;
+           font:bold .95rem system-ui,sans-serif; opacity:0; transition:opacity .15s;
+           pointer-events:none; white-space:nowrap; }
+  #toast.show { opacity:1; }
 </style>
 </head>
 <body>
   <button id="unleash">Unleash 😈</button>
   <button id="close" onclick="window.close()">Close</button>
+  <div id="toast"></div>
 <script>
   const a = new Audio('audio.mp3');
   a.loop = true; a.volume = 1.0;
@@ -21,17 +27,24 @@
   let x = window.screenX, y = window.screenY;
   let dx = fast(), dy = fast();
 
-  // The whole window is an Unleash button — re-taunt, re-aim, (re)play sound.
-  // Affects THIS window only; it never opens new windows.
-  function unleash() {
+  // Non-blocking taunt banner — does NOT freeze the bouncing like alert() did.
+  const toast = document.getElementById('toast');
+  let toastTimer;
+  function taunt(msg) {
+    toast.textContent = msg;
+    toast.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove('show'), 1500);
+  }
+
+  // Whole window is an Unleash button — re-taunt, re-aim, (re)play sound. This window only.
+  document.getElementById('unleash').addEventListener('click', () => {
     dx = fast(); dy = fast();
     a.currentTime = 0; a.play().catch(() => {});
-    alert("You'll never catch me! 😈");
-  }
-  document.getElementById('unleash').addEventListener('click', unleash);
+    taunt("You'll never catch me! 😈");
+  });
 
-  // First taunt on open.
-  alert("You'll never catch me! 😈");
+  taunt("You'll never catch me! 😈");
   a.play().catch(() => {});
 
   // Ask "are you sure?" when this popup is closed (browser shows its own prompt).
