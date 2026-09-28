@@ -25,7 +25,7 @@
   document.getElementById('go').addEventListener('click', () => {
     for (let i = 0; i < COUNT; i++) {
       const w = window.open('popup.html', 'bouncer' + i + '_' + Date.now(),
-        'popup,width=280,height=180,left=' + (60 + i * 120) + ',top=' + (60 + i * 60));
+        'popup,width=180,height=120,left=' + (60 + i * 120) + ',top=' + (60 + i * 60));
       if (w) popups.push(w);
     }
     if (!popups.length) {
